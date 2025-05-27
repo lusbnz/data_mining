@@ -1,51 +1,101 @@
 text,label
-"Sản phẩm tuyệt vời, chất lượng vượt mong đợi!","tích cực"
-"Dịch vụ khách hàng quá tệ, không ai trả lời.","tiêu cực"
-"Ổn, nhưng không có gì nổi bật.","trung tính"
-"Giao hàng nhanh, đóng gói cẩn thận, rất hài lòng!","tích cực"
-"Giá quá cao, không đáng tiền chút nào.","tiêu cực"
-"Chất lượng tạm được, cần cải thiện thêm.","trung tính"
-"Thất vọng, sản phẩm bị lỗi ngay lần đầu sử dụng.","tiêu cực"
-"Thiết kế đẹp, dùng thích mê!","tích cực"
-"Không tệ, nhưng cũng chẳng đặc biệt.","trung tính"
-"Hỗ trợ nhiệt tình, giải quyết vấn đề nhanh chóng.","tích cực"
-"Máy chạy ì ạch, không như quảng cáo.","tiêu cực"
-"Bình thường, đúng như kỳ vọng.","trung tính"
-"Mua lần thứ hai, vẫn ưng ý như lần đầu!","tích cực"
-"Chờ ship cả tuần, chán quá.","tiêu cực"
-"Cũng được, nhưng giá hơi đắt.","trung tính"
-"Không bao giờ quay lại, trải nghiệm kinh khủng.","tiêu cực"
-"Đội ngũ hỗ trợ siêu dễ thương, rất chuyên nghiệp!","tích cực"
-"Chất lượng trung bình, không có gì đáng khen.","trung tính"
-"Rất đáng đồng tiền, sẽ giới thiệu cho bạn bè!","tích cực"
-"Sản phẩm hỏng, liên hệ không được hỗ trợ.","tiêu cực"
-"Ổn áp, dùng được, không phàn nàn.","trung tính"
-"Quá tuyệt, mọi thứ đều hoàn hảo!","tích cực"
-"Đặt hàng sai màu, liên hệ thì bị từ chối đổi.","tiêu cực"
-"Chấp nhận được, không quá tệ.","trung tính"
-"Siêu thích, sản phẩm đúng như mô tả!","tích cực"
-"Chất lượng kém, nhanh hỏng sau vài ngày.","tiêu cực"
-"Không có ý kiến gì, bình thường thôi.","trung tính"
-"Giao hàng đúng hẹn, rất hài lòng với dịch vụ.","tích cực"
-"Giá rẻ nhưng chất lượng cũng rẻ luôn.","tiêu cực"
-"Được, nhưng cần cải thiện bao bì.","trung tính"
-"Trải nghiệm mua sắm tuyệt vời, sẽ quay lại!","tích cực"
-"Đặt hàng mãi không thấy giao, quá thất vọng.","tiêu cực"
-"Ổn, không có gì để chê cả.","trung tính"
-"Sản phẩm đẹp, đúng như hình quảng cáo!","tích cực"
-"Hàng lỗi, đổi trả thì phức tạp.","tiêu cực"
-"Chất lượng trung bình, giá cả hợp lý.","trung tính"
-"Rất ưng ý, dịch vụ chăm sóc khách hàng tốt!","tích cực"
-"Sản phẩm không giống mô tả, cảm thấy bị lừa.","tiêu cực"
-"Bình thường, dùng tạm được.","trung tính"
-"Đỉnh cao, xài thích lắm!","tích cực"
-"Chậm trễ giao hàng, không thông báo trước.","tiêu cực"
-"Không tệ, giá cả phải chăng.","trung tính"
-"Chất lượng tốt, rất đáng mua!","tích cực"
-"Dịch vụ hỗ trợ kém, không giải quyết được vấn đề.","tiêu cực"
-"Ổn, nhưng kỳ vọng cao hơn một chút.","trung tính"
-"Thích lắm, sẽ mua thêm sản phẩm khác!","tích cực"
-"Sản phẩm hư hỏng, không ai chịu trách nhiệm.","tiêu cực"
-"Chấp nhận được, không quá xuất sắc.","trung tính"
-"Siêu hài lòng, mọi thứ đều tuyệt vời!","tích cực"
-"Quá chán, không đúng như kỳ vọng.","tiêu cực"
+"Sản phẩm không như kỳ vọng ban đầu, nhưng vẫn chấp nhận được.",1
+"Tôi đã hy vọng nhiều hơn, nhưng chất lượng chỉ tạm ổn.",1
+"Dịch vụ tốt ngoài mong đợi, tôi sẽ quay lại.",2
+"Sản phẩm này khiến tôi băn khoăn liệu có nên mua tiếp hay không.",1
+"Chất lượng quá tệ, không đáng số tiền bỏ ra.",0
+"Tôi nghĩ sản phẩm này chỉ phù hợp với người ít yêu cầu.",1
+"Đóng gói rất đẹp nhưng bên trong lại không như mong đợi.",1
+"Sản phẩm này có vẻ không phù hợp với nhu cầu của tôi.",0
+"Tôi khá thích sản phẩm, mặc dù giá hơi cao.",2
+"Dịch vụ tận tâm, nhưng tốc độ phục vụ cần cải thiện.",1
+"Sản phẩm đáng giá, sẽ mua thêm nếu có giảm giá.",2
+"Tôi không có gì phàn nàn, sản phẩm ổn.",1
+"Sản phẩm tệ hơn so với quảng cáo.",0
+"Tôi cảm thấy hài lòng với dịch vụ, dù sản phẩm chỉ ở mức trung bình.",1
+"Sản phẩm tốt nhưng giao hàng chậm.",1
+"Tôi sẽ suy nghĩ kỹ trước khi mua lại.",1
+"Dịch vụ hỗ trợ nhanh chóng và chuyên nghiệp.",2
+"Sản phẩm không phù hợp với mô tả.",0
+"Chất lượng vượt ngoài mong đợi, tuyệt vời!",2
+"Tôi không thích màu sắc sản phẩm.",0
+"Sản phẩm này gây thất vọng lớn.",0
+"Tôi không thấy có lý do gì để mua lại.",0
+"Sản phẩm khá ổn nhưng không nổi bật.",1
+"Tôi nghĩ sản phẩm có thể cải thiện hơn.",1
+"Dịch vụ tận tâm, làm hài lòng khách hàng.",2
+"Tôi thấy giá quá cao cho chất lượng này.",0
+"Chất lượng sản phẩm chỉ tạm được.",1
+"Đóng gói cẩn thận, nhưng hàng hóa chưa hoàn hảo.",1
+"Sản phẩm phù hợp với giá tiền.",2
+"Tôi thấy sản phẩm đáng để thử.",2
+"Tôi không thấy sự khác biệt so với sản phẩm khác.",1
+"Sản phẩm này tốt hơn mong đợi ban đầu.",2
+"Sản phẩm bình thường, không đặc sắc.",1
+"Tôi không chắc chắn sẽ giới thiệu sản phẩm này.",1
+"Tôi hài lòng với tốc độ giao hàng.",2
+"Sản phẩm chưa đạt chất lượng như quảng cáo.",0
+"Nhân viên hỗ trợ tốt, nhưng sản phẩm không như ý.",1
+"Sản phẩm kém chất lượng, không đáng tiền.",0
+"Chất lượng sản phẩm khiến tôi bất ngờ.",2
+"Tôi không hài lòng chút nào.",0
+"Sản phẩm trung bình, chưa đặc biệt.",1
+"Sản phẩm tuyệt vời, rất đáng mua!",2
+"Tôi thấy dịch vụ và sản phẩm đều tuyệt vời.",2
+"Sản phẩm không ổn định, chất lượng lúc tốt lúc tệ.",1
+"Tôi không ưng ý sản phẩm này.",0
+"Sản phẩm khá hay, đáng để thử.",2
+"Tôi sẽ giới thiệu cho bạn bè.",2
+"Sản phẩm không gây ấn tượng mạnh.",1
+"Tôi thích sản phẩm nhưng vẫn có điểm trừ nhỏ.",2
+"Sản phẩm hoàn hảo, không còn gì để nói!",2
+"Sản phẩm không tốt, nên tránh.",0
+"Tôi thấy giá và chất lượng không tương xứng.",0
+"Tôi hài lòng với sản phẩm và dịch vụ.",2
+"Sản phẩm không đáng giá tiền bỏ ra.",0
+"Tôi không còn tin tưởng thương hiệu này.",0
+"Sản phẩm làm tôi vui vẻ.",2
+"Sản phẩm này có thể chấp nhận được.",1
+"Tôi sẽ không mua lại sản phẩm này.",0
+"Sản phẩm cần cải thiện nhiều điểm.",0
+"Tôi thấy ổn, không có gì nổi bật.",1
+"Sản phẩm tốt và bền.",2
+"Tôi hài lòng với độ bền của sản phẩm.",2
+"Sản phẩm không phải là lựa chọn tốt nhất.",0
+"Tôi thấy dịch vụ khách hàng khá tốt.",2
+"Sản phẩm khiến tôi phải đắn đo suy nghĩ.",1
+"Sản phẩm không phù hợp với nhu cầu của tôi.",0
+"Tôi không nghĩ sản phẩm này xứng đáng với giá tiền.",0
+"Sản phẩm ổn nhưng chưa nổi bật.",1
+"Tôi sẽ tiếp tục sử dụng sản phẩm.",2
+"Sản phẩm làm tôi thất vọng nhẹ.",1
+"Tôi hài lòng với sản phẩm.",2
+"Sản phẩm kém hơn mong đợi.",0
+"Tôi nghĩ sản phẩm cần được cải tiến.",1
+"Sản phẩm khá tốt, đáng tiền.",2
+"Tôi không có ý định mua lại.",0
+"Sản phẩm làm tôi bất ngờ về độ bền.",2
+"Tôi hài lòng với tốc độ giao hàng.",2
+"Sản phẩm chưa thực sự xuất sắc.",1
+"Tôi thấy sản phẩm này rất đáng thử.",2
+"Tôi không cảm thấy hài lòng.",0
+"Sản phẩm tạm ổn, có thể cân nhắc.",1
+"Tôi sẽ quay lại mua tiếp.",2
+"Sản phẩm này cần cải tiến hơn nữa.",1
+"Tôi không khuyên mua sản phẩm này.",0
+"Sản phẩm làm tôi ngạc nhiên về chất lượng.",2
+"Sản phẩm không đạt như kỳ vọng.",0
+"Tôi sẽ cân nhắc mua lại.",1
+"Sản phẩm này hoàn hảo!",2
+"Sản phẩm không phù hợp với tôi.",0
+"Tôi thấy sản phẩm xứng đáng với giá.",2
+"Sản phẩm trung bình, không có điểm đặc biệt.",1
+"Sản phẩm quá đắt cho chất lượng này.",0
+"Tôi sẽ mua thêm khi có giảm giá.",2
+"Tôi không hài lòng với sản phẩm.",0
+"Sản phẩm tuyệt vời, nên thử!",2
+"Tôi thấy sản phẩm ổn định.",1
+"Tôi sẽ giới thiệu cho người thân.",2
+"Sản phẩm quá tệ, không khuyên dùng.",0
+"Tôi cảm thấy ổn với chất lượng sản phẩm.",1
+"Sản phẩm xứng đáng với số tiền bỏ ra.",2

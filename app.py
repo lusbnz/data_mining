@@ -1,77 +1,95 @@
 import streamlit as st
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trainer, TrainingArguments
-from datasets import load_dataset
+from datasets import Dataset
 import torch
 import os
 import json
+import pandas as pd
 
 st.set_page_config(page_title="Phân Tích Cảm Xúc", layout="wide")
 
 MODEL_DIR = "models"
-PRETRAINED_MODEL = "vinai/phobert-base"
 HISTORY_PATH = "history.json"
 
 @st.cache_resource
-def load_model():
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)
-    model = AutoModelForSequenceClassification.from_pretrained(MODEL_DIR)
+def load_model(model_path):
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    model = AutoModelForSequenceClassification.from_pretrained(model_path)
     return tokenizer, model
 
-def train_and_save_model(output_dir=MODEL_DIR, model_dir=MODEL_DIR, num_train_epochs=2):
-    os.makedirs(output_dir, exist_ok=True)
-
-    # Nếu đã có model cũ, load để tiếp tục huấn luyện
-    if os.path.exists(model_dir) and os.listdir(model_dir):
-        print("Load model PhoBERT đã train trước đó để tiếp tục fine-tune...")
-        tokenizer = AutoTokenizer.from_pretrained(model_dir)
-        model = AutoModelForSequenceClassification.from_pretrained(model_dir)
-    else:
-        print("Chưa có model trước đó, load PhoBERT gốc từ Huggingface...")
-        tokenizer = AutoTokenizer.from_pretrained(PRETRAINED_MODEL)
-        model = AutoModelForSequenceClassification.from_pretrained(PRETRAINED_MODEL, num_labels=3)
-
-    # Load dataset train (bạn có thể thay bằng dữ liệu riêng)
-    dataset = load_dataset("yelp_polarity", split="train[:5000]")  # Demo: chỉ lấy 5000 mẫu
-
+def preprocess_data(df, tokenizer):
+    df['text'] = df['text'].astype(str)
+    dataset = Dataset.from_pandas(df)
     def preprocess(examples):
-        return tokenizer(examples["text"], truncation=True, padding=True, max_length=258)
+        return tokenizer(examples['text'], truncation=True, padding=True, max_length=258)
+    return dataset.map(preprocess, batched=True)
 
-    tokenized = dataset.map(preprocess, batched=True)
-    tokenized = tokenized.rename_column("label", "labels")
-    tokenized.set_format(type="torch", columns=["input_ids", "attention_mask", "labels"])
+def get_next_model_dir(base_dir=MODEL_DIR):
+    if not os.path.exists(base_dir):
+        os.makedirs(base_dir)
+        return os.path.join(base_dir, "model_1")
+    existing = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d)) and d.startswith("model_")]
+    indices = [int(d.split("_")[1]) for d in existing if d.split("_")[1].isdigit()]
+    next_index = max(indices) + 1 if indices else 1
+    return os.path.join(base_dir, f"model_{next_index}")
 
-    # Training arguments
-    args = TrainingArguments(
-        output_dir=output_dir,
-        num_train_epochs=num_train_epochs,
-        per_device_train_batch_size=8,
-        save_steps=500,
-        save_total_limit=1,
-        logging_dir=f"{output_dir}/logs",
-        logging_steps=100,
-        remove_unused_columns=False,
-    )
+def train_and_save_model(uploaded_file, num_train_epochs=2):
+    if uploaded_file is None:
+        st.warning("Vui lòng upload file dữ liệu")
+        return False
 
-    trainer = Trainer(model=model, args=args, train_dataset=tokenized)
-    trainer.train()
+    try:
+        # Đọc file CSV hoặc JSON
+        if uploaded_file.name.endswith('.csv'):
+            df = pd.read_csv(uploaded_file)
+        elif uploaded_file.name.endswith('.json'):
+            df = pd.read_json(uploaded_file)
+        else:
+            st.error("Chỉ hỗ trợ định dạng CSV hoặc JSON")
+            return False
+        
+        if 'text' not in df.columns or 'label' not in df.columns:
+            st.error("File phải có cột 'text' và 'label'")
+            return False
 
-    # Save lại model đã fine-tune tiếp
-    model.save_pretrained(output_dir)
-    tokenizer.save_pretrained(output_dir)
-    print(f"Model đã fine-tune thêm và lưu vào {output_dir}")
+        output_dir = get_next_model_dir()
+        os.makedirs(output_dir, exist_ok=True)
+
+        # Dùng một model pretrained phù hợp (ví dụ: roberta-base), bạn có thể đổi model khác nếu muốn
+        pretrained_model_name = "roberta-base"
+
+        tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name)
+        model = AutoModelForSequenceClassification.from_pretrained(pretrained_model_name, num_labels=3)
+        tokenized = preprocess_data(df, tokenizer)
+
+        args = TrainingArguments(
+            output_dir=output_dir,
+            num_train_epochs=num_train_epochs,
+            per_device_train_batch_size=8,
+            save_steps=500,
+            save_total_limit=1,
+            logging_dir=f"{output_dir}/logs",
+            logging_steps=100,
+            remove_unused_columns=False,
+        )
+
+        trainer = Trainer(model=model, args=args, train_dataset=tokenized)
+        trainer.train()
+
+        model.save_pretrained(output_dir)
+        tokenizer.save_pretrained(output_dir)
+        return True
+    except Exception as e:
+        st.error(f"Lỗi khi xử lý file: {e}")
+        return False
 
 def save_history(text, label):
-    # Đọc file history cũ
     if os.path.exists(HISTORY_PATH):
         with open(HISTORY_PATH, "r", encoding="utf-8") as f:
             history = json.load(f)
     else:
         history = []
-
-    # Thêm record mới
     history.append({"text": text, "label": label})
-
-    # Ghi lại file
     with open(HISTORY_PATH, "w", encoding="utf-8") as f:
         json.dump(history, f, ensure_ascii=False, indent=2)
 
@@ -81,19 +99,42 @@ def load_history():
             return json.load(f)
     return []
 
-# Sidebar tùy chọn
-st.sidebar.header("Tùy chọn")
-if st.sidebar.button("Huấn luyện thêm PhoBERT"):
-    with st.spinner("Đang huấn luyện tiếp từ PhoBERT..."):
-        train_and_save_model()
-        st.success("Huấn luyện thêm hoàn tất! Model đã lưu và sẵn sàng dự đoán.")
-        st.experimental_rerun()
+# Sidebar
+st.sidebar.header("Chức năng")
 
-# Load model
-tokenizer, model = load_model()
+# Load danh sách model có sẵn trong models folder
+if os.path.exists(MODEL_DIR):
+    model_list = [os.path.join(MODEL_DIR, d) for d in sorted(os.listdir(MODEL_DIR)) if os.path.isdir(os.path.join(MODEL_DIR, d))]
+else:
+    model_list = []
+    
+if not model_list:
+    st.sidebar.warning("Chưa có model nào trong thư mục models. Vui lòng train model mới.")
+else:
+    selected_model = st.sidebar.selectbox("Chọn model để dự đoán", model_list)
 
-# Giao diện chính
-st.title("Phân Tích Cảm Xúc Văn Bản (PhoBERT)")
+uploaded_file = st.sidebar.file_uploader("Upload CSV hoặc JSON chứa cột 'text' và 'label' để huấn luyện", type=['csv', 'json'])
+
+if st.sidebar.button("Huấn luyện model"):
+    with st.spinner("Đang huấn luyện model..."):
+        success = train_and_save_model(uploaded_file)
+        if success:
+            st.success("Huấn luyện thành công! Model đã lưu và sẵn sàng dự đoán.")
+            # Reload model list sau khi train xong
+            model_list = [os.path.join(MODEL_DIR, d) for d in sorted(os.listdir(MODEL_DIR)) if os.path.isdir(os.path.join(MODEL_DIR, d))]
+            selected_model = model_list[-1]
+        else:
+            st.error("Huấn luyện thất bại!")
+
+# Load model để dự đoán
+if model_list:
+    tokenizer, model = load_model(selected_model)
+else:
+    st.warning("Không có model để load. Vui lòng train model trước.")
+    st.stop()
+
+# Phần dự đoán
+st.title("Phân Tích Cảm Xúc Văn Bản")
 
 input_text = st.text_area("Nhập văn bản để dự đoán cảm xúc:", height=150)
 
@@ -107,16 +148,12 @@ if st.button("Dự đoán"):
                 predicted_class = torch.argmax(logits, dim=1).item()
             label_map = {0: "tiêu cực", 1: "trung tính", 2: "tích cực"}
             predicted_label = label_map.get(predicted_class, "Không xác định")
-            
-            # Lưu lịch sử dự đoán
             save_history(input_text, predicted_label)
-
             st.success(f"Kết quả dự đoán: **{predicted_label}**")
 
-        # Hiển thị lịch sử 10 dự đoán gần nhất
         history = load_history()
-        st.subheader("Lịch sử dự đoán:")
+        st.subheader("Lịch sử dự đoán (tối đa 10):")
         for i, record in enumerate(reversed(history[-10:]), 1):
             st.write(f"{i}. [{record['label']}] {record['text']}")
     else:
-        st.warning("Vui lòng nhập văn bản trước khi dự đoán.")
+        st.warning("Vui lòng nhập văn bản để dự đoán.")
