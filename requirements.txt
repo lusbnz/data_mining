@@ -1,0 +1,4 @@
+streamlit>=1.18.1
+transformers>=4.30.2
+datasets>=2.14.2
+torch>=2.0.1
