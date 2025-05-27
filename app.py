@@ -5,6 +5,7 @@ import torch
 import os
 import json
 import pandas as pd
+from transformers.trainer_callback import TrainerCallback
 
 st.set_page_config(page_title="Phân Tích Cảm Xúc", layout="wide")
 
@@ -33,13 +34,38 @@ def get_next_model_dir(base_dir=MODEL_DIR):
     next_index = max(indices) + 1 if indices else 1
     return os.path.join(base_dir, f"model_{next_index}")
 
+# Callback để stream log huấn luyện vào Streamlit
+class StreamlitCallback(TrainerCallback):
+    def __init__(self, log_placeholder, progress_bar):
+        self.log_placeholder = log_placeholder
+        self.progress_bar = progress_bar
+        self.logs = ""
+        self.total_steps = None
+
+    def on_train_begin(self, args, state, control, **kwargs):
+        self.total_steps = args.max_steps if args.max_steps else int(len(state.log_history) / args.logging_steps) * args.logging_steps
+        if self.total_steps == 0:
+            self.total_steps = 1000  # fallback
+        self.progress_bar.progress(0)
+
+    def on_log(self, args, state, control, logs=None, **kwargs):
+        if logs:
+            log_str = json.dumps(logs, indent=2)
+            self.logs += f"\n{log_str}"
+            self.log_placeholder.text(self.logs)
+            if 'step' in logs and self.total_steps:
+                progress = min(logs['step'] / self.total_steps, 1.0)
+                self.progress_bar.progress(progress)
+
+    def on_train_end(self, args, state, control, **kwargs):
+        self.progress_bar.progress(1.0)
+
 def train_and_save_model(uploaded_file, num_train_epochs=2):
     if uploaded_file is None:
         st.warning("Vui lòng upload file dữ liệu")
         return False
 
     try:
-        # Đọc file CSV hoặc JSON
         if uploaded_file.name.endswith('.csv'):
             df = pd.read_csv(uploaded_file)
         elif uploaded_file.name.endswith('.json'):
@@ -55,9 +81,7 @@ def train_and_save_model(uploaded_file, num_train_epochs=2):
         output_dir = get_next_model_dir()
         os.makedirs(output_dir, exist_ok=True)
 
-        # Dùng một model pretrained phù hợp (ví dụ: roberta-base), bạn có thể đổi model khác nếu muốn
         pretrained_model_name = "roberta-base"
-
         tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name)
         model = AutoModelForSequenceClassification.from_pretrained(pretrained_model_name, num_labels=3)
         tokenized = preprocess_data(df, tokenizer)
@@ -66,14 +90,22 @@ def train_and_save_model(uploaded_file, num_train_epochs=2):
             output_dir=output_dir,
             num_train_epochs=num_train_epochs,
             per_device_train_batch_size=8,
-            save_steps=500,
-            save_total_limit=1,
+            save_steps=100,
             logging_dir=f"{output_dir}/logs",
-            logging_steps=100,
+            logging_steps=10,
             remove_unused_columns=False,
+            logging_strategy="steps",
         )
 
-        trainer = Trainer(model=model, args=args, train_dataset=tokenized)
+        log_placeholder = st.empty()
+        progress_bar = st.progress(0)
+
+        trainer = Trainer(
+            model=model,
+            args=args,
+            train_dataset=tokenized,
+            callbacks=[StreamlitCallback(log_placeholder, progress_bar)]
+        )
         trainer.train()
 
         model.save_pretrained(output_dir)
@@ -101,8 +133,6 @@ def load_history():
 
 # Sidebar
 st.sidebar.header("Chức năng")
-
-# Load danh sách model có sẵn trong models folder
 if os.path.exists(MODEL_DIR):
     model_list = [os.path.join(MODEL_DIR, d) for d in sorted(os.listdir(MODEL_DIR)) if os.path.isdir(os.path.join(MODEL_DIR, d))]
 else:
@@ -120,22 +150,19 @@ if st.sidebar.button("Huấn luyện model"):
         success = train_and_save_model(uploaded_file)
         if success:
             st.success("Huấn luyện thành công! Model đã lưu và sẵn sàng dự đoán.")
-            # Reload model list sau khi train xong
             model_list = [os.path.join(MODEL_DIR, d) for d in sorted(os.listdir(MODEL_DIR)) if os.path.isdir(os.path.join(MODEL_DIR, d))]
             selected_model = model_list[-1]
         else:
             st.error("Huấn luyện thất bại!")
 
-# Load model để dự đoán
 if model_list:
     tokenizer, model = load_model(selected_model)
 else:
     st.warning("Không có model để load. Vui lòng train model trước.")
     st.stop()
 
-# Phần dự đoán
+# Dự đoán
 st.title("Phân Tích Cảm Xúc Văn Bản")
-
 input_text = st.text_area("Nhập văn bản để dự đoán cảm xúc:", height=150)
 
 if st.button("Dự đoán"):
