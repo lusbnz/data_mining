@@ -1,9 +1,5 @@
 [
   {
-    "text": "hello anh em",
-    "label": "tiêu cực"
-  },
-  {
     "text": "ngày mai đi thi mà chưa học gì",
     "label": "tiêu cực"
   },
@@ -20,23 +16,39 @@
     "label": "tích cực"
   },
   {
-    "text": "con gà đang đi bộ",
-    "label": "tích cực"
-  },
-  {
     "text": "thầy giáo đang giảng bài",
-    "label": "tích cực"
+    "label": "Trung tính"
   },
   {
-    "text": "Sản phẩm này khiến tôi băn khoăn liệu có nên mua tiếp hay không.",
+    "text": "con gà",
+    "label": "Trung tính"
+  },
+  {
+    "text": "tôi mông lung quá",
+    "label": "trung tính"
+  },
+  {
+    "text": "tôi ăn ngon quá",
+    "label": "trung tính"
+  },
+  {
+    "text": "tôi ngu quá",
+    "label": "trung tính"
+  },
+  {
+    "text": "tôi ngu quá",
     "label": "tiêu cực"
   },
   {
-    "text": "Sản phẩm này khiến tôi băn khoăn liệu có nên mua tiếp hay không.",
-    "label": "tiêu cực"
+    "text": "tôi ngu quá haizz\n",
+    "label": "trung tính"
   },
   {
-    "text": "Sản phẩm này khiến tôi băn khoăn liệu có nên mua tiếp hay không.",
-    "label": "tiêu cực"
+    "text": "hiểu được mục tiêu của môn học , thầy nhiệt tình giúp đỡ sinh viên .",
+    "label": "trung tính"
+  },
+  {
+    "text": "tôi bị ngu\n",
+    "label": "trung tính"
   }
 ]
