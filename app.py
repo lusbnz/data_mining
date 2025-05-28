@@ -10,7 +10,7 @@ import numpy as np
 import json
 import os
 
-st.set_page_config(page_title="Phân Tích Cảm Xúc", layout="wide")
+st.set_page_config(page_title="Phân loại cảm xúc trong câu", layout="wide")
 
 MODEL_DIR = "models"
 HISTORY_PATH = "history.json"
@@ -176,7 +176,7 @@ else:
     st.warning("Không có model nào. Vui lòng huấn luyện.")
     st.stop()
 
-st.title("Phân Tích Cảm Xúc Văn Bản")
+st.title("Phân loại cảm xúc trong câu")
 input_text = st.text_area("Nhập văn bản để dự đoán:", height=150)
 
 if st.button("Dự đoán"):
