@@ -191,7 +191,13 @@ if st.button("Dự đoán"):
                 logits = outputs.logits
                 pred = torch.argmax(logits, dim=1).item()
             label_map = {0: "tiêu cực", 1: "trung tính", 2: "tích cực"}
-            st.success(f"Kết quả dự đoán: **{label_map.get(pred, 'Không xác định')}**")
+            result_label = label_map.get(pred, 'Không xác định')
+            if pred == 0:
+                st.error(f"Kết quả dự đoán: **{result_label}**")
+            elif pred == 2:
+                st.success(f"Kết quả dự đoán: **{result_label}**")
+            else:
+                st.info(f"Kết quả dự đoán: **{result_label}**")
             save_history(input_text, label_map.get(pred, 'Không xác định'))
 
         st.subheader("Lịch sử dự đoán (10 gần nhất):")

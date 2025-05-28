@@ -1,54 +1,14 @@
 [
   {
-    "text": "ngày mai đi thi mà chưa học gì",
-    "label": "tiêu cực"
-  },
-  {
-    "text": "ngày mai Trung thuyết trình, mà Trung không tự tin lắm",
-    "label": "tiêu cực"
-  },
-  {
-    "text": "hôm qua Trung được em Hương nhắn tin, ôi thích quá",
+    "text": "hôm nay trời đẹp quá",
     "label": "tích cực"
   },
   {
-    "text": "tôi ăn 2 bát cơm",
-    "label": "tích cực"
-  },
-  {
-    "text": "thầy giáo đang giảng bài",
-    "label": "Trung tính"
-  },
-  {
-    "text": "con gà",
-    "label": "Trung tính"
-  },
-  {
-    "text": "tôi mông lung quá",
-    "label": "trung tính"
-  },
-  {
-    "text": "tôi ăn ngon quá",
-    "label": "trung tính"
-  },
-  {
-    "text": "tôi ngu quá",
-    "label": "trung tính"
-  },
-  {
-    "text": "tôi ngu quá",
+    "text": "hôm nay trời xấu quá",
     "label": "tiêu cực"
   },
   {
-    "text": "tôi ngu quá haizz\n",
-    "label": "trung tính"
-  },
-  {
-    "text": "hiểu được mục tiêu của môn học , thầy nhiệt tình giúp đỡ sinh viên .",
-    "label": "trung tính"
-  },
-  {
-    "text": "tôi bị ngu\n",
+    "text": "hôm nay trời bình thường",
     "label": "trung tính"
   }
 ]
