@@ -131,7 +131,6 @@ def train_custom_model(uploaded_file, num_train_epochs=3):
             log_placeholder.text(log)
             progress_bar.progress((epoch+1)/num_train_epochs)
             
-            # Save checkpoint
             torch.save({
                 'epoch': epoch,
                 'model_state_dict': model.state_dict(),
@@ -139,7 +138,6 @@ def train_custom_model(uploaded_file, num_train_epochs=3):
                 'scheduler_state_dict': scheduler.state_dict(),
             }, CHECKPOINT_PATH)
 
-        # Save final model
         output_dir = get_next_model_dir()
         model.save_pretrained(output_dir)
         tokenizer.save_pretrained(output_dir)
@@ -149,7 +147,6 @@ def train_custom_model(uploaded_file, num_train_epochs=3):
         st.error(f"Lỗi khi xử lý file: {e}")
         return False
 
-# --- Streamlit UI ---
 st.sidebar.header("Chức năng")
 if os.path.exists(MODEL_DIR):
     model_list = [os.path.join(MODEL_DIR, d) for d in sorted(os.listdir(MODEL_DIR)) if os.path.isdir(os.path.join(MODEL_DIR, d))]
